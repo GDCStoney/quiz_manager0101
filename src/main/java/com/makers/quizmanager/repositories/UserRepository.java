@@ -2,7 +2,9 @@ package com.makers.quizmanager.repositories;
 
 import com.makers.quizmanager.domain.User;
 import com.makers.quizmanager.exceptions.QmAuthException;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public interface UserRepository {
     
     Integer create(String firstName, String lastName, Integer roleId, String email, String password) throws QmAuthException;
