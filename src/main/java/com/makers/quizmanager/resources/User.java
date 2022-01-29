@@ -10,12 +10,12 @@ public class User {
 
     @PostMapping("/register")
     public String registerUser(@RequestBody Map<String, Object> userMap) {
-        String roleId = (String) userMap.get('roleId');
-        String firstName = (String) userMap.get('firstName');
-        String lastName = (String) userMap.get('lastName');
-        String email = (String) userMap.get('email');
-        String password = (String) userMap.get('password');
+        String roleId = (String) userMap.get("roleId");
+        String firstName = (String) userMap.get("firstName");
+        String lastName = (String) userMap.get("lastName");
+        String email = (String) userMap.get("email");
+        String password = (String) userMap.get("password");
 
-        return roleId + ", " + firstName + ", " + lastName + ", " + email + ", " + password;
+        return roleId.toString() + ", " + firstName + ", " + lastName + ", " + email + ", " + password;
     }
 }
