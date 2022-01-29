@@ -16,6 +16,6 @@ public class User {
         String email = (String) userMap.get("email");
         String password = (String) userMap.get("password");
 
-        return roleId.toString() + ", " + firstName + ", " + lastName + ", " + email + ", " + password;
+        return roleId + ", " + firstName + ", " + lastName + ", " + email + ", " + password;
     }
 }
