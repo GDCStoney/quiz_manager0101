@@ -18,7 +18,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User registerUser(String firstName, String lastName, Integer roleId, String email, String password) throws QmAuthException {
-        Pattern pattern = Pattern.compile("^(,+)@(.+)$");
+        Pattern pattern = Pattern.compile("^(.+)@(.+)$");
         if(email != null) email = email.toLowerCase();
         if(!pattern.matcher(email).matches())
             throw new QmAuthException("Invalid email format");
