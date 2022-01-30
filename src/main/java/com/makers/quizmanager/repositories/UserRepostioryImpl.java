@@ -2,6 +2,7 @@ package com.makers.quizmanager.repositories;
 
 import com.makers.quizmanager.domain.User;
 import com.makers.quizmanager.exceptions.QmAuthException;
+import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -33,6 +34,7 @@ public class UserRepostioryImpl implements UserRepository {
     @Override
     public Integer create(String firstName, String lastName, Integer roleId, String email, String password) throws QmAuthException {
         try {
+            String hashedPassword = BCrypt.hashpw(password, BCrypt.gensalt(10));
             KeyHolder keyHolder = new GeneratedKeyHolder();
             jdbcTemplate.update(connection -> {
                 PreparedStatement ps = connection.prepareStatement(SQL_CREATE, Statement.RETURN_GENERATED_KEYS);
@@ -40,7 +42,7 @@ public class UserRepostioryImpl implements UserRepository {
                 ps.setString(2, firstName);
                 ps.setString(3, lastName);
                 ps.setString(4, email);
-                ps.setString(5, password);
+                ps.setString(5, hashedPassword);
                 return ps;
             }, keyHolder);
             return (Integer) keyHolder.getKeys().get("USER_ID");
