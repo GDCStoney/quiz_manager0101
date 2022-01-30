@@ -1,6 +1,8 @@
 package com.makers.quizmanager.services;
 
 import com.makers.quizmanager.domain.Quiz;
+import com.makers.quizmanager.exceptions.QmBadRequestException;
+import com.makers.quizmanager.exceptions.QmResourceNotFoundException;
 
 import java.util.List;
 
