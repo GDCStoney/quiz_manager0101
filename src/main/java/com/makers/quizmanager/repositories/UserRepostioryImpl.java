@@ -65,7 +65,7 @@ public class UserRepostioryImpl implements UserRepository {
     public User findByEmailAndPassword(String email, String password) throws QmAuthException {
         try {
             User user = jdbcTemplate.queryForObject(SQL_FIND_BY_EMAIL, new Object[]{email}, userRowMapper);
-            if (!password.equals(user.getPassword()))
+            if (!BCrypt.checkpw(password, user.getPassword()))
                 throw new QmAuthException("Invalid Email or Password");
         }catch (EmptyResultDataAccessException e) {
             throw new QmAuthException("Invalid Email or Password");
