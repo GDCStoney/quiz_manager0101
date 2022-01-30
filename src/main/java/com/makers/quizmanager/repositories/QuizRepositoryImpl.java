@@ -17,7 +17,7 @@ import java.util.List;
 @Repository
 public class QuizRepositoryImpl implements QuizRepository{
 
-    public static final String SQL_FIND_BY_ID = "SELECT QZ.QUIZ_ID, QZ.TITLE, QZ.DESCRIPTION " +
+    public static final String SQL_FIND_BY_ID = "SELECT QZ.QUIZ_ID, QZ.TITLE, QZ.DESCRIPTION, COUNT(QS.QUIZ_ID) NUMBER_OF_QUESTIONS " +
             "FROM QM_QUESTIONS QS RIGHT OUTER JOIN QM_QUIZZES QZ ON QZ.QUIZ_ID = QS.QUIZ_ID " +
             "WHERE QZ.QUIZ_ID = ? GROUP BY QZ.QUIZ_ID";
 
@@ -70,7 +70,8 @@ public class QuizRepositoryImpl implements QuizRepository{
     private RowMapper<Quiz> quizRowMapper = ((rs, rowNum) -> {
         return new Quiz(rs.getInt("QUIZ_ID"),
                 rs.getString("TITLE"),
-                rs.getString("DESCRIPTION")
+                rs.getString("DESCRIPTION"),
+                rs.getInt("NUMBER_OF_QUESTIONS")
                 );
     });
 }
