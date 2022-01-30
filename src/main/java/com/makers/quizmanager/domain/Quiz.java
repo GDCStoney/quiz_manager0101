@@ -39,10 +39,9 @@ public class Quiz {
         this.numberOfQuestions = numberOfQuestions;
     }
 
-    public Quiz(Integer quizId, String name, String description, Integer numberOfQuestions) {
+    public Quiz(Integer quizId, String name, String description) {
         this.quizId = quizId;
         Name = name;
         this.description = description;
-        this.numberOfQuestions = numberOfQuestions;
     }
 }
