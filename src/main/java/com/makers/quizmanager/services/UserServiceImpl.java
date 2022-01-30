@@ -28,4 +28,10 @@ public class UserServiceImpl implements UserService {
         Integer userId = userRepository.create(firstName, lastName, roleId, email, password);
         return userRepository.findById(userId);
     }
+
+    @Override
+    public User validateUser(String email, String password) throws QmAuthException {
+        if (email != null) email = email.toLowerCase();
+        return userRepository.findByEmailAndPassword(email, password);
+    }
 }

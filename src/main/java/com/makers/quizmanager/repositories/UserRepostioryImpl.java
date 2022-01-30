@@ -3,6 +3,7 @@ package com.makers.quizmanager.repositories;
 import com.makers.quizmanager.domain.User;
 import com.makers.quizmanager.exceptions.QmAuthException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -22,6 +23,9 @@ public class UserRepostioryImpl implements UserRepository {
 
     private static final String SQL_FIND_BY_ID = "SELECT USER_ID, ROLE_ID, FIRST_NAME, LAST_NAME, EMAIL, PASSWORD FROM QM_USERS " +
             "WHERE USER_ID = ?";
+
+    private static final String SQL_FIND_BY_EMAIL = "SELECT USER_ID, ROLE_ID, FIRST_NAME, LAST_NAME, EMAIL, PASSWORD FROM QM_USERS " +
+            "WHERE EMAIL = ?";
 
     @Autowired
     JdbcTemplate jdbcTemplate;
@@ -54,6 +58,19 @@ public class UserRepostioryImpl implements UserRepository {
     public User findById(Integer userId) {
         return jdbcTemplate.queryForObject(SQL_FIND_BY_ID, new Object[]{userId}, userRowMapper);
     }
+
+    @Override
+    public User findByEmailAndPassword(String email, String password) throws QmAuthException {
+        try {
+            User user = jdbcTemplate.queryForObject(SQL_FIND_BY_EMAIL, new Object[]{email}, userRowMapper);
+            if (!password.equals(user.getPassword()))
+                throw new QmAuthException("Invalid Email or Password");
+        }catch (EmptyResultDataAccessException e) {
+            throw new QmAuthException("Invalid Email or Password");
+        }
+        return jdbcTemplate.queryForObject(SQL_FIND_BY_EMAIL, new Object[]{email}, userRowMapper);
+    }
+
 
     private RowMapper<User> userRowMapper = ((rs, rowNum) -> {
         return new User(

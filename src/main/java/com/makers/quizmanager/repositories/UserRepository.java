@@ -11,4 +11,6 @@ public interface UserRepository {
     Integer getCountByEmail(String email);
     
     User findById(Integer userId);
+
+    User findByEmailAndPassword(String email, String password) throws QmAuthException;
 }

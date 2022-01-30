@@ -7,4 +7,5 @@ public interface UserService {
 
     User registerUser(String firstName, String lastName, Integer roleId, String email, String password) throws QmAuthException;
 
+    User validateUser(String email, String password) throws QmAuthException;
 }
