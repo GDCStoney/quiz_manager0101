@@ -18,7 +18,7 @@ public class QuizManagerApiApplication {
 		FilterRegistrationBean<AuthFilter> registrationBean = new FilterRegistrationBean<>();
 		AuthFilter authFilter = new AuthFilter();
 		registrationBean.setFilter(authFilter);
-		registrationBean.addUrlPatterns("/api/quizmanager/*");
+		registrationBean.addUrlPatterns("/api/quizzes/*");
 		return registrationBean;
 	}
 }
