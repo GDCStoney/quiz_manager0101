@@ -24,7 +24,7 @@ public class QuizServiceImpl implements QuizService{
 
     @Override
     public Quiz fetchQuizById(Integer quizId) throws QmResourceNotFoundException {
-        return null;
+        return quizRepository.findById(quizId);
     }
 
     @Override
