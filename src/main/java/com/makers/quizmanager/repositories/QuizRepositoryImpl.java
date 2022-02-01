@@ -16,6 +16,10 @@ import java.util.List;
 
 @Repository
 public class QuizRepositoryImpl implements QuizRepository{
+    
+    public static final String SQL_FIND_ALL = "SELECT QZ.QUIZ_ID, QZ.TITLE, QZ.DESCRIPTION, COUNT(QS.QUIZ_ID) NUMBER_OF_QUESTIONS " +
+            "FROM QM_QUESTIONS QS RIGHT OUTER JOIN QM_QUIZZES QZ ON QZ.QUIZ_ID = QS.QUIZ_ID " +
+            "GROUP BY QZ.QUIZ_ID";
 
     public static final String SQL_FIND_BY_ID = "SELECT QZ.QUIZ_ID, QZ.TITLE, QZ.DESCRIPTION, COUNT(QS.QUIZ_ID) NUMBER_OF_QUESTIONS " +
             "FROM QM_QUESTIONS QS RIGHT OUTER JOIN QM_QUIZZES QZ ON QZ.QUIZ_ID = QS.QUIZ_ID " +
@@ -29,7 +33,11 @@ public class QuizRepositoryImpl implements QuizRepository{
 
     @Override
     public List<Quiz> findAll() throws QmResourceNotFoundException {
-        return null;
+        try {
+            return jdbcTemplate.query(SQL_FIND_ALL, quizRowMapper);
+        }catch (Exception e) {
+            throw new QmResourceNotFoundException("Quiz not found");
+        }
     }
 
     @Override

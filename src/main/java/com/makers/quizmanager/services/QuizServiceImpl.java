@@ -19,7 +19,7 @@ public class QuizServiceImpl implements QuizService{
 
     @Override
     public List<Quiz> fetchAllQuizzes() {
-        return null;
+        return quizRepository.findAll();
     }
 
     @Override

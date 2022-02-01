@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -18,10 +19,9 @@ public class QuizResource {
     QuizService quizService;
 
     @GetMapping("")
-    public String getAllQuizzes(HttpServletRequest request) {
-        int userId = (Integer) request.getAttribute("userId");
-        int roleId = (Integer) request.getAttribute("roleId");
-        return "Authenticated with userid: " + userId + " and roleId: " + roleId;
+    public ResponseEntity<List<Quiz>> getAllQuizzes(HttpServletRequest request) {
+        List<Quiz> quizzes = quizService.fetchAllQuizzes();
+        return new ResponseEntity<>(quizzes, HttpStatus.OK);
     }
 
     @GetMapping("/{quizId}")
