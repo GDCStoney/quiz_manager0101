@@ -24,7 +24,7 @@ public class QuizResource {
         return "Authenticated with userid: " + userId + " and roleId: " + roleId;
     }
 
-    @GetMapping("/{quizId")
+    @GetMapping("/{quizId}")
     public ResponseEntity<Quiz> getQuizById(HttpServletRequest request,
                                             @PathVariable("quizId") Integer quizId) {
         Quiz quiz = quizService.fetchQuizById(quizId);
