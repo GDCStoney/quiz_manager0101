@@ -2,6 +2,7 @@ package com.makers.quizmanager.resources;
 
 import com.makers.quizmanager.domain.Quiz;
 import com.makers.quizmanager.services.QuizService;
+import com.makers.quizmanager.services.ConvertService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,10 +19,14 @@ public class QuizResource {
     @Autowired
     QuizService quizService;
 
+    @Autowired
+    ConvertService convertService;
+
     @GetMapping("")
-    public ResponseEntity<List<Quiz>> getAllQuizzes(HttpServletRequest request) {
+    public ResponseEntity<String> getAllQuizzes(HttpServletRequest request) {
         List<Quiz> quizzes = quizService.fetchAllQuizzes();
-        return new ResponseEntity<>(quizzes, HttpStatus.OK);
+        String jsonQuizzes = convertService.convertQuizListToJSON(quizzes);
+        return new ResponseEntity<>(jsonQuizzes, HttpStatus.OK);
     }
 
     @GetMapping("/{quizId}")

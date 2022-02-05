@@ -22,14 +22,22 @@ public class UserResource {
     UserService userService;
 
     @PostMapping("/login")
+    @CrossOrigin(origins = "http://localhost:8081")
     public ResponseEntity<Map<String, String>> loginUser(@RequestBody Map<String, Object> userMap) {
         String email = (String) userMap.get("email");
         String password = (String) userMap.get("password");
         User user = userService.validateUser(email, password);
-        return new ResponseEntity<>(generateJWTToken(user), HttpStatus.OK);
+        Map<String, String> map = generateJWTToken(user);
+        map.put("userId", user.getUserId().toString());
+        map.put("firstName", user.getFirstName());
+        map.put("lastName", user.getLastName());
+        map.put("email", user.getEmail());
+        map.put("roleId", user.getRoleId().toString());
+        return new ResponseEntity<>(map, HttpStatus.OK);
     }
 
     @PostMapping("/register")
+    @CrossOrigin(origins = "http://localhost:8081")
     public ResponseEntity<Map<String, String>> registerUser(@RequestBody Map<String, Object> userMap) {
         Integer roleId = (Integer) userMap.get("roleId");
         String firstName = (String) userMap.get("firstName");
@@ -37,7 +45,9 @@ public class UserResource {
         String email = (String) userMap.get("email");
         String password = (String) userMap.get("password");
         User user= userService.registerUser(firstName, lastName, roleId, email, password);
-        return new ResponseEntity<>(generateJWTToken(user), HttpStatus.OK);
+        Map<String, String> map = generateJWTToken(user);
+        map.put("message", "User " + firstName + " " + lastName + " created successfully. Please login to access Quiz Manager.");
+        return new ResponseEntity<>(map, HttpStatus.OK);
     }
 
     private Map<String, String> generateJWTToken(User user) {
