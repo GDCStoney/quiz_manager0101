@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -24,5 +25,12 @@ public class QuestionResource {
         String questionText = (String) questionMap.get("questionText");
         Question question = questionService.addQuestion(quizId, questionText);
         return new ResponseEntity<>(question, HttpStatus.CREATED);
+    }
+
+    @GetMapping("")
+    public ResponseEntity<List<Question>> getAllQuestions(HttpServletRequest request,
+                                                           @PathVariable("quizId") Integer quizId) {
+        List<Question> questions = questionService.fetchAllQuestions(quizId);
+        return new ResponseEntity<>(questions, HttpStatus.OK);
     }
 }

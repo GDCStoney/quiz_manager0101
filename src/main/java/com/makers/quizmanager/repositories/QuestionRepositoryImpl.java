@@ -17,6 +17,9 @@ import java.util.List;
 @Repository
 public class QuestionRepositoryImpl implements QuestionRepository {
 
+    private static final String SQL_FIND_ALL = "SELECT QUESTION_ID, QUIZ_ID, QUESTION_TEXT FROM QM_QUESTIONS " +
+            "WHERE QUIZ_ID = ?";
+
     private static final String SQL_FIND_BY_ID = "SELECT QUESTION_ID, QUIZ_ID, QUESTION_TEXT FROM QM_QUESTIONS " +
             "WHERE QUIZ_ID = ? AND QUESTION_ID = ?";
 
@@ -28,7 +31,7 @@ public class QuestionRepositoryImpl implements QuestionRepository {
 
     @Override
     public List<Question> findAll(Integer quizId) {
-        return null;
+        return jdbcTemplate.query(SQL_FIND_ALL, new Object[]{quizId}, questionRowMapper);
     }
 
     @Override

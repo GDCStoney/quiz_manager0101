@@ -20,7 +20,7 @@ public class QuestionServiceImpl implements QuestionService{
 
     @Override
     public List<Question> fetchAllQuestions(Integer quizId) {
-        return null;
+        return questionRepository.findAll(quizId);
     }
 
     @Override
