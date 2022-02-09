@@ -18,13 +18,16 @@ import java.util.List;
 public class QuestionRepositoryImpl implements QuestionRepository {
 
     private static final String SQL_FIND_ALL = "SELECT QUESTION_ID, QUIZ_ID, QUESTION_TEXT FROM QM_QUESTIONS " +
-            "WHERE QUIZ_ID = ?";
+            "WHERE QUIZ_ID = ? ORDER BY QUIZ_ID";
 
     private static final String SQL_FIND_BY_ID = "SELECT QUESTION_ID, QUIZ_ID, QUESTION_TEXT FROM QM_QUESTIONS " +
             "WHERE QUIZ_ID = ? AND QUESTION_ID = ?";
 
     private static final String SQL_CREATE = "INSERT INTO QM_QUESTIONS (QUESTION_ID, QUIZ_ID, QUESTION_TEXT) " +
             "VALUES (NEXTVAL('QM_QUESTIONS_SEQ'), ?, ?)";
+
+    private static final String SQL_UPDATE = "UPDATE QM_QUESTIONS SET QUESTION_TEXT = ? " +
+            "WHERE QUIZ_ID = ? AND QUESTION_ID = ?";
 
     @Autowired
     JdbcTemplate jdbcTemplate;
@@ -61,8 +64,12 @@ public class QuestionRepositoryImpl implements QuestionRepository {
     }
 
     @Override
-    public void update(Integer quizId, Integer questionId, Question questionText) throws QmBadRequestException {
-
+    public void update(Integer quizId, Integer questionId, Question question) throws QmBadRequestException {
+        try {
+            jdbcTemplate.update(SQL_UPDATE, new Object[]{question.getQuestionText(), quizId, questionId });
+        }catch (Exception e) {
+            throw new QmBadRequestException("Invalid request");
+        }
     }
 
     @Override

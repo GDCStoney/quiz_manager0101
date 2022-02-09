@@ -36,7 +36,7 @@ public class QuestionServiceImpl implements QuestionService{
 
     @Override
     public void updateQuestion(Integer quizId, Integer questionId, Question question) throws QmBadRequestException {
-
+        questionRepository.update(quizId, questionId, question);
     }
 
     @Override
