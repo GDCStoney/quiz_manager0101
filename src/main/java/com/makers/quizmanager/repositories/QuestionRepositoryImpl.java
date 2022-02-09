@@ -18,7 +18,7 @@ import java.util.List;
 public class QuestionRepositoryImpl implements QuestionRepository {
 
     private static final String SQL_FIND_ALL = "SELECT QUESTION_ID, QUIZ_ID, QUESTION_TEXT FROM QM_QUESTIONS " +
-            "WHERE QUIZ_ID = ? ORDER BY QUIZ_ID";
+            "WHERE QUIZ_ID = ? ORDER BY QUESTION_ID";
 
     private static final String SQL_FIND_BY_ID = "SELECT QUESTION_ID, QUIZ_ID, QUESTION_TEXT FROM QM_QUESTIONS " +
             "WHERE QUIZ_ID = ? AND QUESTION_ID = ?";
@@ -27,6 +27,9 @@ public class QuestionRepositoryImpl implements QuestionRepository {
             "VALUES (NEXTVAL('QM_QUESTIONS_SEQ'), ?, ?)";
 
     private static final String SQL_UPDATE = "UPDATE QM_QUESTIONS SET QUESTION_TEXT = ? " +
+            "WHERE QUIZ_ID = ? AND QUESTION_ID = ?";
+
+    private static final String SQL_DELETE_BY_ID = "DELETE FROM QM_QUESTIONS " +
             "WHERE QUIZ_ID = ? AND QUESTION_ID = ?";
 
     @Autowired
@@ -74,7 +77,9 @@ public class QuestionRepositoryImpl implements QuestionRepository {
 
     @Override
     public void removeById(Integer quizId, Integer questionId) throws QmResourceNotFoundException {
-
+        int count = jdbcTemplate.update(SQL_DELETE_BY_ID, new Object[]{quizId, questionId});
+        if (count == 0)
+            throw new QmResourceNotFoundException("Question not found");
     }
 
     private RowMapper<Question> questionRowMapper = ((rs, rowNum) -> {

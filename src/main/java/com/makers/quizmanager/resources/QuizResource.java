@@ -51,7 +51,16 @@ public class QuizResource {
                                                      @PathVariable("quizId") Integer quizId,
                                                      @RequestBody Quiz quiz) {
         quizService.updateQuiz(quizId, quiz);
-        Map <String, Boolean> map = new HashMap<>();
+        Map<String, Boolean> map = new HashMap<>();
+        map.put("Success", true);
+        return new ResponseEntity<>(map, HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{quizId}")
+    public ResponseEntity<Map<String, Boolean>> deleteQuiz(HttpServletRequest request,
+                                                           @PathVariable("quizId") Integer quizId) {
+        quizService.removeQuizWithAllQuestions(quizId);
+        Map<String, Boolean> map = new HashMap<>();
         map.put("Success", true);
         return new ResponseEntity<>(map, HttpStatus.OK);
     }

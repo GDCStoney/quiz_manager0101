@@ -41,6 +41,6 @@ public class QuestionServiceImpl implements QuestionService{
 
     @Override
     public void removeQuestionWithAllResponses(Integer quizId, Integer questionId) throws QmResourceNotFoundException {
-
+        questionRepository.removeById(quizId, questionId);
     }
 }

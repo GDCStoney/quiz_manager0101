@@ -13,23 +13,28 @@ import org.springframework.stereotype.Repository;
 import java.sql.PreparedStatement;
 import java.sql.Statement;
 import java.util.List;
+import java.util.PrimitiveIterator;
 
 @Repository
 public class QuizRepositoryImpl implements QuizRepository{
     
-    public static final String SQL_FIND_ALL = "SELECT QZ.QUIZ_ID, QZ.NAME, QZ.DESCRIPTION, COUNT(QS.QUIZ_ID) NUMBER_OF_QUESTIONS " +
+    private static final String SQL_FIND_ALL = "SELECT QZ.QUIZ_ID, QZ.NAME, QZ.DESCRIPTION, COUNT(QS.QUIZ_ID) NUMBER_OF_QUESTIONS " +
             "FROM QM_QUESTIONS QS RIGHT OUTER JOIN QM_QUIZZES QZ ON QZ.QUIZ_ID = QS.QUIZ_ID " +
             "GROUP BY QZ.QUIZ_ID ORDER BY QZ.NAME";
 
-    public static final String SQL_FIND_BY_ID = "SELECT QZ.QUIZ_ID, QZ.NAME, QZ.DESCRIPTION, COUNT(QS.QUIZ_ID) NUMBER_OF_QUESTIONS " +
+    private static final String SQL_FIND_BY_ID = "SELECT QZ.QUIZ_ID, QZ.NAME, QZ.DESCRIPTION, COUNT(QS.QUIZ_ID) NUMBER_OF_QUESTIONS " +
             "FROM QM_QUESTIONS QS RIGHT OUTER JOIN QM_QUIZZES QZ ON QZ.QUIZ_ID = QS.QUIZ_ID " +
             "WHERE QZ.QUIZ_ID = ? GROUP BY QZ.QUIZ_ID";
 
-    public static final String SQL_CREATE = "INSERT INTO QM_QUIZZES (QUIZ_ID, NAME, DESCRIPTION) " +
+    private static final String SQL_CREATE = "INSERT INTO QM_QUIZZES (QUIZ_ID, NAME, DESCRIPTION) " +
             "VALUES (NEXTVAL('QM_QUIZZES_SEQ'), ?, ?)";
 
     public static final String SQL_UPDATE = "UPDATE QM_QUIZZES SET NAME = ?, DESCRIPTION = ? " +
             "WHERE QUIZ_ID = ?";
+
+    private static final String SQL_DELETE_QUIZ = "DELETE FROM QM_QUIZZES WHERE QUIZ_ID = ?";
+
+    private static final String SQL_DELETE_ALL_QUESTIONS = "DELETE FROM QM_QUESTIONS WHERE QUIZ_ID = ?";
 
     @Autowired
     JdbcTemplate jdbcTemplate;
@@ -79,7 +84,12 @@ public class QuizRepositoryImpl implements QuizRepository{
 
     @Override
     public void removeById(Integer quizId) throws QmResourceNotFoundException {
+        this.removeAllQuizQuestions(quizId);
+        jdbcTemplate.update(SQL_DELETE_QUIZ, new Object[]{quizId});
+    }
 
+    private void removeAllQuizQuestions(Integer quizId) {
+        jdbcTemplate.update(SQL_DELETE_ALL_QUESTIONS, new Object[]{quizId});
     }
 
     private RowMapper<Quiz> quizRowMapper = ((rs, rowNum) -> {

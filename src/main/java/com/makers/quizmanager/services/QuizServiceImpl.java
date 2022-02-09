@@ -40,6 +40,7 @@ public class QuizServiceImpl implements QuizService{
 
     @Override
     public void removeQuizWithAllQuestions(Integer quizId) throws QmResourceNotFoundException {
-
+        this.fetchQuizById(quizId);
+        quizRepository.removeById(quizId);
     }
 }

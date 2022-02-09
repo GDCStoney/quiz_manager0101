@@ -55,4 +55,14 @@ public class QuestionResource {
         return new ResponseEntity<>(map, HttpStatus.OK);
     }
 
+    @DeleteMapping("/{questionId}")
+    public ResponseEntity<Map<String, Boolean>> deleteQuestion(HttpServletRequest request,
+                                                               @PathVariable("quizId") Integer quizId,
+                                                               @PathVariable("questionId") Integer questionId) {
+        questionService.removeQuestionWithAllResponses(quizId, questionId);
+        Map<String, Boolean> map = new HashMap<>();
+        map.put("Success", true);
+        return new ResponseEntity<>(map, HttpStatus.OK);
+    }
+
 }
