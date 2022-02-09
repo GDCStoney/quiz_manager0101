@@ -25,7 +25,7 @@ public class QuestionServiceImpl implements QuestionService{
 
     @Override
     public Question fetchQuestionById(Integer quizId, Integer questionId) throws QmResourceNotFoundException {
-        return null;
+        return questionRepository.findById(quizId, questionId);
     }
 
     @Override

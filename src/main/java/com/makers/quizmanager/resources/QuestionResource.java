@@ -33,4 +33,13 @@ public class QuestionResource {
         List<Question> questions = questionService.fetchAllQuestions(quizId);
         return new ResponseEntity<>(questions, HttpStatus.OK);
     }
+
+    @GetMapping("/{questionId}")
+    public ResponseEntity<Question> getQuestionById(HttpServletRequest request,
+                                                    @PathVariable("quizId") Integer quizId,
+                                                    @PathVariable("questionId") Integer questionId) {
+        Question question=questionService.fetchQuestionById(quizId, questionId);
+        return new ResponseEntity<>(question, HttpStatus.OK);
+    }
+
 }
