@@ -17,10 +17,10 @@ import java.util.List;
 @Repository
 public class QuestionRepositoryImpl implements QuestionRepository {
 
-    private static final String SQL_FIND_BY_ID = "SELECT QUESTION_ID, QUIZ_ID, QUESTION FROM QM_QUESTIONS " +
-            "WHERE QUESTION_ID = ?";
+    private static final String SQL_FIND_BY_ID = "SELECT QUESTION_ID, QUIZ_ID, QUESTION_TEXT FROM QM_QUESTIONS " +
+            "WHERE QUIZ_ID = ? AND QUESTION_ID = ?";
 
-    private static final String SQL_CREATE = "INSERT INTO QM_QUESTIONS (QUESTION_ID, QUIZ_ID, QUESTION) " +
+    private static final String SQL_CREATE = "INSERT INTO QM_QUESTIONS (QUESTION_ID, QUIZ_ID, QUESTION_TEXT) " +
             "VALUES (NEXTVAL('QM_QUESTIONS_SEQ'), ?, ?)";
 
     @Autowired
@@ -36,20 +36,21 @@ public class QuestionRepositoryImpl implements QuestionRepository {
         try {
             return jdbcTemplate.queryForObject(SQL_FIND_BY_ID, new Object[]{quizId, questionId}, questionRowMapper);
         }catch (Exception e) {
-            throw new QmResourceNotFoundException("Not Found");
+            throw new QmResourceNotFoundException("Question not Found");
         }
     }
 
     @Override
-    public Integer create(Integer quizId, String question) throws QmBadRequestException {
+    public Integer create(Integer quizId, String questionText) throws QmBadRequestException {
         try {
             KeyHolder keyHolder = new GeneratedKeyHolder();
-            jdbcTemplate.update(connection -> {
-                    PreparedStatement ps = connection.prepareStatement(SQL_CREATE, Statement.RETURN_GENERATED_KEYS);
-                    ps.setInt(1,quizId);
-                    ps.setString(2,question);
-                    return ps;
-            }, keyHolder);
+            jdbcTemplate.update(
+                    connection -> {
+                        PreparedStatement ps = connection.prepareStatement(SQL_CREATE, Statement.RETURN_GENERATED_KEYS);
+                        ps.setInt(1, quizId);
+                        ps.setString(2, questionText);
+                        return ps;
+                    }, keyHolder);
             return (Integer) keyHolder.getKeys().get("QUESTION_ID");
         }catch (Exception e) {
             throw new QmBadRequestException("Invalid request");
@@ -57,7 +58,7 @@ public class QuestionRepositoryImpl implements QuestionRepository {
     }
 
     @Override
-    public void update(Integer quizId, Integer questionId, Question question) throws QmBadRequestException {
+    public void update(Integer quizId, Integer questionId, Question questionText) throws QmBadRequestException {
 
     }
 
@@ -70,7 +71,7 @@ public class QuestionRepositoryImpl implements QuestionRepository {
         return (new Question(
                 rs.getInt("QUESTION_ID"),
                 rs.getInt("QUIZ_ID"),
-                rs.getString("QUESTION")
+                rs.getString("QUESTION_TEXT")
         ));
     });
 }

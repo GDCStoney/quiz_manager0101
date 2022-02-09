@@ -29,8 +29,8 @@ public class QuestionServiceImpl implements QuestionService{
     }
 
     @Override
-    public Question addQuestion(Integer quizId, String question) throws QmBadRequestException {
-        int questionId = questionRepository.create(quizId, question);
+    public Question addQuestion(Integer quizId, String questionText) throws QmBadRequestException {
+        int questionId = questionRepository.create(quizId, questionText);
         return questionRepository.findById(quizId, questionId);
     }
 

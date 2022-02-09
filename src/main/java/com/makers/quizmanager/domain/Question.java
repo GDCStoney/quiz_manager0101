@@ -4,12 +4,12 @@ public class Question {
 
     private Integer questionId;
     private Integer quizId;
-    private String question;
+    private String questionText;
 
-    public Question(Integer questionId, Integer quizId, String question) {
+    public Question(Integer questionId, Integer quizId, String questionText) {
         this.questionId = questionId;
         this.quizId = quizId;
-        this.question = question;
+        this.questionText = questionText;
     }
 
     public Integer getQuestionId() {
@@ -28,11 +28,11 @@ public class Question {
         this.quizId = quizId;
     }
 
-    public String getDescription() {
-        return question;
+    public String getQuestionText() {
+        return questionText;
     }
 
-    public void setDescription(String description) {
-        this.question = description;
+    public void setQuestionText(String questionText) {
+        this.questionText = questionText;
     }
 }
