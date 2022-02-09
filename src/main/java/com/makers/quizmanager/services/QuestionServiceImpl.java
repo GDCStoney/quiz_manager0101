@@ -3,10 +3,21 @@ package com.makers.quizmanager.services;
 import com.makers.quizmanager.domain.Question;
 import com.makers.quizmanager.exceptions.QmBadRequestException;
 import com.makers.quizmanager.exceptions.QmResourceNotFoundException;
+import com.makers.quizmanager.repositories.QuestionRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+@Service
+@Transactional
 public class QuestionServiceImpl implements QuestionService{
+
+    @Autowired
+    QuestionRepository questionRepository;
+
+
     @Override
     public List<Question> fetchAllQuestions(Integer quizId) {
         return null;
@@ -19,7 +30,8 @@ public class QuestionServiceImpl implements QuestionService{
 
     @Override
     public Question addQuestion(Integer quizId, String question) throws QmBadRequestException {
-        return null;
+        int questionId = questionRepository.create(quizId, question);
+        return questionRepository.findById(quizId, questionId);
     }
 
     @Override
