@@ -28,14 +28,14 @@ public class QuizServiceImpl implements QuizService{
     }
 
     @Override
-    public Quiz addQuiz(String title, String description) throws QmBadRequestException {
-        int quizId = quizRepository.create(title, description);
+    public Quiz addQuiz(String name, String description) throws QmBadRequestException {
+        int quizId = quizRepository.create(name, description);
         return quizRepository.findById(quizId);
     }
 
     @Override
     public void updateQuiz(Integer quizId, Quiz quiz) throws QmBadRequestException {
-
+        quizRepository.update(quizId, quiz);
     }
 
     @Override

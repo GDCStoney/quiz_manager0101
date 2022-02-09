@@ -12,7 +12,7 @@ public interface QuizRepository {
 
     Quiz findById(Integer quizId) throws QmBadRequestException;
 
-    Integer create(String title, String description) throws QmBadRequestException;
+    Integer create(String name, String description) throws QmBadRequestException;
 
     void update(Integer quizId, Quiz quiz) throws QmBadRequestException;
 

@@ -25,7 +25,7 @@ foreign key (role_id) references qm_roles(role_id);
 
 CREATE TABLE qm_quizzes(
     quiz_id integer primary key not null,
-    title varchar(20) not null,
+    name varchar(20) not null,
     description varchar(50) not null
 );
 

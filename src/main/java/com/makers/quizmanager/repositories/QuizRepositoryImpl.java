@@ -17,16 +17,19 @@ import java.util.List;
 @Repository
 public class QuizRepositoryImpl implements QuizRepository{
     
-    public static final String SQL_FIND_ALL = "SELECT QZ.QUIZ_ID, QZ.TITLE, QZ.DESCRIPTION, COUNT(QS.QUIZ_ID) NUMBER_OF_QUESTIONS " +
+    public static final String SQL_FIND_ALL = "SELECT QZ.QUIZ_ID, QZ.NAME, QZ.DESCRIPTION, COUNT(QS.QUIZ_ID) NUMBER_OF_QUESTIONS " +
             "FROM QM_QUESTIONS QS RIGHT OUTER JOIN QM_QUIZZES QZ ON QZ.QUIZ_ID = QS.QUIZ_ID " +
             "GROUP BY QZ.QUIZ_ID";
 
-    public static final String SQL_FIND_BY_ID = "SELECT QZ.QUIZ_ID, QZ.TITLE, QZ.DESCRIPTION, COUNT(QS.QUIZ_ID) NUMBER_OF_QUESTIONS " +
+    public static final String SQL_FIND_BY_ID = "SELECT QZ.QUIZ_ID, QZ.NAME, QZ.DESCRIPTION, COUNT(QS.QUIZ_ID) NUMBER_OF_QUESTIONS " +
             "FROM QM_QUESTIONS QS RIGHT OUTER JOIN QM_QUIZZES QZ ON QZ.QUIZ_ID = QS.QUIZ_ID " +
             "WHERE QZ.QUIZ_ID = ? GROUP BY QZ.QUIZ_ID";
 
-    public static final String SQL_CREATE = "INSERT INTO QM_QUIZZES (QUIZ_ID, TITLE, DESCRIPTION) " +
+    public static final String SQL_CREATE = "INSERT INTO QM_QUIZZES (QUIZ_ID, NAME, DESCRIPTION) " +
             "VALUES (NEXTVAL('QM_QUIZZES_SEQ'), ?, ?)";
+
+    public static final String SQL_UPDATE = "UPDATE QM_QUIZZES SET NAME = ?, DESCRIPTION = ? " +
+            "WHERE QUIZ_ID = ?";
 
     @Autowired
     JdbcTemplate jdbcTemplate;
@@ -50,12 +53,12 @@ public class QuizRepositoryImpl implements QuizRepository{
     }
 
     @Override
-    public Integer create(String title, String description) throws QmBadRequestException {
+    public Integer create(String name, String description) throws QmBadRequestException {
         try {
             KeyHolder keyHolder = new GeneratedKeyHolder();
             jdbcTemplate.update(connection -> {
                 PreparedStatement ps = connection.prepareStatement(SQL_CREATE, Statement.RETURN_GENERATED_KEYS);
-                ps.setString(1, title);
+                ps.setString(1, name);
                 ps.setString(2, description);
                 return ps;
             }, keyHolder);
@@ -67,7 +70,11 @@ public class QuizRepositoryImpl implements QuizRepository{
 
     @Override
     public void update(Integer quizId, Quiz quiz) throws QmBadRequestException {
-
+        try {
+            jdbcTemplate.update(SQL_UPDATE, new Object[]{quiz.getName(), quiz.getDescription(), quizId});
+        } catch (Exception e) {
+            throw new QmBadRequestException("Invalid request");
+        }
     }
 
     @Override
@@ -77,7 +84,7 @@ public class QuizRepositoryImpl implements QuizRepository{
 
     private RowMapper<Quiz> quizRowMapper = ((rs, rowNum) -> {
         return new Quiz(rs.getInt("QUIZ_ID"),
-                rs.getString("TITLE"),
+                rs.getString("NAME"),
                 rs.getString("DESCRIPTION"),
                 rs.getInt("NUMBER_OF_QUESTIONS")
                 );

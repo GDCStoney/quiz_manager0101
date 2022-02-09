@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -38,10 +39,20 @@ public class QuizResource {
 
     @PostMapping("")
     public ResponseEntity<Quiz> addQuiz(HttpServletRequest request,
-                                        @RequestBody Map<String, Object> categoryMap) {
-        String title = (String) categoryMap.get("title");
-        String description = (String) categoryMap.get("description");
-        Quiz quiz = quizService.addQuiz(title, description);
+                                        @RequestBody Map<String, Object> quizMap) {
+        String name = (String) quizMap.get("name");
+        String description = (String) quizMap.get("description");
+        Quiz quiz = quizService.addQuiz(name, description);
         return new ResponseEntity<>(quiz, HttpStatus.CREATED);
+    }
+
+    @PutMapping("/{quizId}")
+    public ResponseEntity<Map<String, Boolean>> updateQuiz(HttpServletRequest request,
+                                                     @PathVariable("quizId") Integer quizId,
+                                                     @RequestBody Quiz quiz) {
+        quizService.updateQuiz(quizId, quiz);
+        Map <String, Boolean> map = new HashMap<>();
+        map.put("Success", true);
+        return new ResponseEntity<>(map, HttpStatus.OK);
     }
 }

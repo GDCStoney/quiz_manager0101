@@ -12,7 +12,7 @@ public interface QuizService {
 
     Quiz fetchQuizById(Integer quizId) throws QmResourceNotFoundException;
 
-    Quiz addQuiz(String title, String description) throws QmBadRequestException;
+    Quiz addQuiz(String name, String description) throws QmBadRequestException;
 
     void updateQuiz(Integer quizId, Quiz quiz) throws QmBadRequestException;
 
