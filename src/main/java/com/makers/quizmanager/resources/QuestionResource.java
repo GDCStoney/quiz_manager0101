@@ -1,7 +1,6 @@
 package com.makers.quizmanager.resources;
 
 import com.makers.quizmanager.domain.Question;
-import com.makers.quizmanager.domain.Quiz;
 import com.makers.quizmanager.services.QuestionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
