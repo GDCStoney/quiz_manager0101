@@ -11,7 +11,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Service
-@Transactional
 public class QResponseServiceImpl implements QResponseService{
 
     @Autowired
@@ -24,13 +23,14 @@ public class QResponseServiceImpl implements QResponseService{
     }
 
     @Override
-    public QResponse fetchQResponseById(Integer quizId, Integer questionId, Integer qResponseId) throws QmResourceNotFoundException {
-        return null;
+    public QResponse fetchQResponseById(Integer qResponseId, Integer questionId, Integer quizId ) throws QmResourceNotFoundException {
+        return qResponseRepository.findById(qResponseId, questionId, quizId);
     }
 
     @Override
     public QResponse addQResponse(Integer quizId, Integer questionId, String qResponseText, Boolean correctAnswer) throws QmBadRequestException {
-        return null;
+        int qResponseId = qResponseRepository.create(quizId, questionId, qResponseText, correctAnswer);
+        return qResponseRepository.findById(qResponseId, questionId, quizId);
     }
 
     @Override

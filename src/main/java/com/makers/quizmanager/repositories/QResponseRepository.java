@@ -10,7 +10,7 @@ public interface QResponseRepository {
 
     List<QResponse> findAll(Integer quizId, Integer questionId);
 
-    QResponse findById(Integer quizId, Integer questionId, Integer qResponseId) throws QmResourceNotFoundException;
+    QResponse findById(Integer qResponseId, Integer questionId, Integer quizId) throws QmResourceNotFoundException;
 
     Integer create(Integer quizId, Integer questionId, String responseText, Boolean correctAnswer) throws QmBadRequestException;
 
