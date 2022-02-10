@@ -18,8 +18,8 @@ public class QResponseServiceImpl implements QResponseService{
 
 
     @Override
-    public List<QResponse> fetchAllQResponses(Integer quizId, Integer questionId) {
-        return null;
+    public List<QResponse> fetchAllQResponses(Integer questionId, Integer quizId) {
+        return qResponseRepository.findAll(questionId, quizId);
     }
 
     @Override

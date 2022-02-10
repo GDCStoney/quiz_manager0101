@@ -8,6 +8,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -27,5 +29,13 @@ public class QResponseResource {
         Boolean correctAnswer = (Boolean) qResponseMap.get("correctAnswer");
         QResponse qResponse = qResponseService.addQResponse(quizId, questionId, responseText, correctAnswer);
         return new ResponseEntity<>(qResponse, HttpStatus.CREATED);
+    }
+
+    @GetMapping("")
+    public ResponseEntity<List<QResponse>> findAllQResponses(HttpServletRequest request,
+                                                             @PathVariable("quizId") Integer quizId,
+                                                             @PathVariable("questionId") Integer questionId) {
+        List<QResponse> qResponses = qResponseService.fetchAllQResponses(questionId, quizId);
+        return new ResponseEntity<>(qResponses, HttpStatus.OK);
     }
 }

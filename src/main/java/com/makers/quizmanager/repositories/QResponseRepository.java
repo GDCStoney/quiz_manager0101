@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface QResponseRepository {
 
-    List<QResponse> findAll(Integer quizId, Integer questionId);
+    List<QResponse> findAll(Integer questionId, Integer quizId);
 
     QResponse findById(Integer qResponseId, Integer questionId, Integer quizId) throws QmResourceNotFoundException;
 

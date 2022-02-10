@@ -17,6 +17,9 @@ import java.util.List;
 @Repository
 public class QResponseRepositoryImpl implements QResponseRepository{
 
+    private static final String SQL_FIND_ALL = "SELECT QRESPONSE_ID, QUESTION_ID, QUIZ_ID, RESPONSE_TEXT, CORRECT_ANSWER FROM QM_QRESPONSES " +
+            "WHERE QUESTION_ID = ? AND QUIZ_ID = ?";
+
     private static final String SQL_FIND_BY_ID = "SELECT QRESPONSE_ID, QUESTION_ID, QUIZ_ID, RESPONSE_TEXT, CORRECT_ANSWER FROM QM_QRESPONSES " +
             "WHERE QRESPONSE_ID = ? AND QUESTION_ID = ? AND QUIZ_ID = ?";
 
@@ -28,8 +31,8 @@ public class QResponseRepositoryImpl implements QResponseRepository{
 
 
     @Override
-    public List<QResponse> findAll(Integer quizId, Integer questionId) {
-        return null;
+    public List<QResponse> findAll(Integer questionId, Integer quizId) {
+        return jdbcTemplate.query(SQL_FIND_ALL, new Object[]{questionId, quizId}, qResponseRowMapper);
     }
 
     @Override

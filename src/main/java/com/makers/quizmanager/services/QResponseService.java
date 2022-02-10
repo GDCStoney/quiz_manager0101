@@ -10,7 +10,7 @@ import java.util.List;
 
 public interface QResponseService {
 
-    List<QResponse> fetchAllQResponses(Integer quizId, Integer questionId);
+    List<QResponse> fetchAllQResponses(Integer questionId, Integer quizId);
 
     QResponse fetchQResponseById(Integer quizId, Integer questionId, Integer qResponseId) throws QmResourceNotFoundException;
 
