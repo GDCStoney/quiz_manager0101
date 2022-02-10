@@ -31,6 +31,15 @@ public class QResponseResource {
         return new ResponseEntity<>(qResponse, HttpStatus.CREATED);
     }
 
+    @GetMapping("/{qResponseId")
+    public ResponseEntity<QResponse> findQResponseById(HttpServletRequest request,
+                                                       @PathVariable("quizId") Integer quizId,
+                                                       @PathVariable("questionId") Integer questionId,
+                                                       @PathVariable("qResponseId") Integer qResponseId) {
+        QResponse qResponse = qResponseService.fetchQResponseById(quizId, questionId, qResponseId);
+        return new ResponseEntity<>(qResponse, HttpStatus.OK);
+    }
+
     @GetMapping("")
     public ResponseEntity<List<QResponse>> findAllQResponses(HttpServletRequest request,
                                                              @PathVariable("quizId") Integer quizId,
