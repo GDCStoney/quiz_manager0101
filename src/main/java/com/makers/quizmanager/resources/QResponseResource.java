@@ -31,12 +31,12 @@ public class QResponseResource {
         return new ResponseEntity<>(qResponse, HttpStatus.CREATED);
     }
 
-    @GetMapping("/{qResponseId")
+    @GetMapping("/{qResponseId}")
     public ResponseEntity<QResponse> findQResponseById(HttpServletRequest request,
                                                        @PathVariable("quizId") Integer quizId,
                                                        @PathVariable("questionId") Integer questionId,
                                                        @PathVariable("qResponseId") Integer qResponseId) {
-        QResponse qResponse = qResponseService.fetchQResponseById(quizId, questionId, qResponseId);
+        QResponse qResponse = qResponseService.fetchQResponseById(qResponseId, questionId, quizId);
         return new ResponseEntity<>(qResponse, HttpStatus.OK);
     }
 
@@ -55,6 +55,17 @@ public class QResponseResource {
                                                                 @PathVariable("qResponseId") Integer qResponseId,
                                                                 @RequestBody QResponse qResponse) {
         qResponseService.updateQResponse(quizId, questionId, qResponseId, qResponse);
+        Map<String, Boolean> map = new HashMap<>();
+        map.put("Success", true);
+        return new ResponseEntity<>(map, HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{qResponseId}")
+    public ResponseEntity<Map<String, Boolean>> deleteQResponse(HttpServletRequest request,
+                                                                @PathVariable("quizId") Integer quizId,
+                                                                @PathVariable("questionId") Integer questionId,
+                                                                @PathVariable("qResponseId") Integer qResponseId) {
+        qResponseService.removeQResponse(quizId, questionId, qResponseId);
         Map<String, Boolean> map = new HashMap<>();
         map.put("Success", true);
         return new ResponseEntity<>(map, HttpStatus.OK);

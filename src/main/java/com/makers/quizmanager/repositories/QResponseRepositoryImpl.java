@@ -29,6 +29,9 @@ public class QResponseRepositoryImpl implements QResponseRepository{
     private static final String SQL_UPDATE = "UPDATE QM_QRESPONSES SET RESPONSE_TEXT = ?, CORRECT_ANSWER = ? " +
             "WHERE QRESPONSE_ID = ? AND QUESTION_ID = ? AND QUIZ_ID = ?";
 
+    private static final String SQL_DELETE = "DELETE FROM QM_QRESPONSES " +
+            "WHERE QRESPONSE_ID = ? AND QUESTION_ID = ? AND QUIZ_ID = ?";
+
     @Autowired
     JdbcTemplate jdbcTemplate;
 
@@ -76,7 +79,10 @@ public class QResponseRepositoryImpl implements QResponseRepository{
 
     @Override
     public void removeById(Integer quizId, Integer questionId, Integer qResponseId) throws QmResourceNotFoundException {
-
+        int count = jdbcTemplate.update(SQL_DELETE, new Object[]{qResponseId, questionId, quizId});
+        if (count == 0) {
+            throw new QmResourceNotFoundException("QResponse not found");
+        }
     }
 
     private RowMapper<QResponse> qResponseRowMapper = ((rs, rowNum) -> {

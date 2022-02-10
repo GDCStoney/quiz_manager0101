@@ -41,6 +41,6 @@ public class QResponseServiceImpl implements QResponseService{
 
     @Override
     public void removeQResponse(Integer quizId, Integer questionId, Integer qResponseId) throws QmResourceNotFoundException {
-
+        qResponseRepository.removeById(quizId, questionId, qResponseId);
     }
 }
