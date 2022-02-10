@@ -14,7 +14,7 @@ public interface QuestionRepository {
 
     Integer create(Integer quizId, String questionText) throws QmBadRequestException;
 
-    void update(Integer quizId, Integer questionId, Question questionText) throws QmBadRequestException;
+    void update(Integer quizId, Integer questionId, Question question) throws QmBadRequestException;
 
     void removeById(Integer quizId, Integer questionId) throws QmResourceNotFoundException;
 }

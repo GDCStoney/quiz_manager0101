@@ -3,6 +3,8 @@ package com.makers.quizmanager.services;
 import com.makers.quizmanager.domain.QResponse;
 import com.makers.quizmanager.exceptions.QmBadRequestException;
 import com.makers.quizmanager.exceptions.QmResourceNotFoundException;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
