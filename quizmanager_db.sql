@@ -37,23 +37,23 @@ CREATE table qm_questions(
 alter table qm_questions add constraint quest_quiz_fk
     foreign key (quiz_id) references qm_quizzes(quiz_id);
 
-create table qm_responses(
-    response_id integer primary key not null,
+create table qm_qresponses(
+    qresponse_id integer primary key not null,
     question_id integer not null,
     quiz_id integer not null,
     response_text varchar(150) not null,
     correct_answer boolean
 );
-alter table qm_responses add constraint resp_ques_fk
+alter table qm_qresponses add constraint qresp_ques_fk
     foreign key (question_id) references qm_questions(question_id);
-alter table qm_responses add constraint resp_quiz_fk
+alter table qm_qresponses add constraint qresp_quiz_fk
     foreign key (quiz_id) references qm_quizzes(quiz_id) ;
 
 CREATE SEQUENCE qm_roles_seq increment 1 start 1;
 create sequence qm_users_seq increment 1 start 1;
 create sequence qm_quizzes_seq increment 1 start 1;
 create sequence qm_questions_seq increment 1 start 100;
-create sequence qm_responses_seq increment 1 start 1000;
+create sequence qm_qresponses_seq increment 1 start 1000;
 
 insert into qm_roles (role_id, role_name)
 values (NEXTVAL('qm_roles_seq'), 'Taker'),

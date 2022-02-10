@@ -13,7 +13,6 @@ import org.springframework.stereotype.Repository;
 import java.sql.PreparedStatement;
 import java.sql.Statement;
 import java.util.List;
-import java.util.PrimitiveIterator;
 
 @Repository
 public class QuizRepositoryImpl implements QuizRepository{
@@ -33,6 +32,8 @@ public class QuizRepositoryImpl implements QuizRepository{
             "WHERE QUIZ_ID = ?";
 
     private static final String SQL_DELETE_QUIZ = "DELETE FROM QM_QUIZZES WHERE QUIZ_ID = ?";
+
+    private static final String SQL_DELETE_ALL_QRESPONSES = "DELETE FROM QM_QRESPONSES WHERE QUIZ_ID = ?";
 
     private static final String SQL_DELETE_ALL_QUESTIONS = "DELETE FROM QM_QUESTIONS WHERE QUIZ_ID = ?";
 
@@ -84,8 +85,16 @@ public class QuizRepositoryImpl implements QuizRepository{
 
     @Override
     public void removeById(Integer quizId) throws QmResourceNotFoundException {
+        this.removeAllQuizQResponses(quizId);
         this.removeAllQuizQuestions(quizId);
-        jdbcTemplate.update(SQL_DELETE_QUIZ, new Object[]{quizId});
+        int count = jdbcTemplate.update(SQL_DELETE_QUIZ, new Object[]{quizId});
+        if (count == 0) {
+            throw new QmResourceNotFoundException("Quiz not found");
+        }
+    }
+
+    private void removeAllQuizQResponses(Integer quizId) {
+        jdbcTemplate.update(SQL_DELETE_ALL_QRESPONSES, new Object[]{quizId});
     }
 
     private void removeAllQuizQuestions(Integer quizId) {

@@ -2,26 +2,26 @@ package com.makers.quizmanager.domain;
 
 public class QResponse {
 
-    private Integer responseId;
+    private Integer qResponseId;
     private Integer questionId;
     private Integer quizId;
     private String responseText;
     private Boolean correctAnswer;
 
-    public QResponse(Integer responseId, Integer questionId, Integer quizId, String responseText, Boolean correctAnswer) {
-        this.responseId = responseId;
+    public QResponse(Integer qResponseId, Integer questionId, Integer quizId, String responseText, Boolean correctAnswer) {
+        this.qResponseId = qResponseId;
         this.questionId = questionId;
         this.quizId = quizId;
         this.responseText = responseText;
         this.correctAnswer = correctAnswer;
     }
 
-    public Integer getResponseId() {
-        return responseId;
+    public Integer getQResponseId() {
+        return qResponseId;
     }
 
-    public void setResponseId(Integer responseId) {
-        this.responseId = responseId;
+    public void setQResponseId(Integer qResponseId) {
+        this.qResponseId = qResponseId;
     }
 
     public Integer getQuestionId() {

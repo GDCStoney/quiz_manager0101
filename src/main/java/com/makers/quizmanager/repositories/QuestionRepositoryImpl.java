@@ -32,6 +32,9 @@ public class QuestionRepositoryImpl implements QuestionRepository {
     private static final String SQL_DELETE_BY_ID = "DELETE FROM QM_QUESTIONS " +
             "WHERE QUIZ_ID = ? AND QUESTION_ID = ?";
 
+    private  static final String SQL_DELETE_ALL_QRESPONSES = "DELETE FROM QM_QRESPONSES " +
+            "WHERE QUIZ_ID = ? AND QUESION_ID = ?";
+
     @Autowired
     JdbcTemplate jdbcTemplate;
 
@@ -77,9 +80,14 @@ public class QuestionRepositoryImpl implements QuestionRepository {
 
     @Override
     public void removeById(Integer quizId, Integer questionId) throws QmResourceNotFoundException {
+        this.removeAllQuestionQResponses(quizId, questionId);
         int count = jdbcTemplate.update(SQL_DELETE_BY_ID, new Object[]{quizId, questionId});
         if (count == 0)
             throw new QmResourceNotFoundException("Question not found");
+    }
+
+    private void removeAllQuestionQResponses(Integer quizId, Integer questionId) {
+        jdbcTemplate.update(SQL_DELETE_ALL_QRESPONSES, new Object[]{quizId, questionId});
     }
 
     private RowMapper<Question> questionRowMapper = ((rs, rowNum) -> {
