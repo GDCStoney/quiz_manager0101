@@ -38,4 +38,16 @@ public class QResponseResource {
         List<QResponse> qResponses = qResponseService.fetchAllQResponses(questionId, quizId);
         return new ResponseEntity<>(qResponses, HttpStatus.OK);
     }
+
+    @PutMapping("/{qResponseId}")
+    public ResponseEntity<Map<String, Boolean>> updateQResponse(HttpServletRequest request,
+                                                                @PathVariable("quizId") Integer quizId,
+                                                                @PathVariable("questionId") Integer questionId,
+                                                                @PathVariable("qResponseId") Integer qResponseId,
+                                                                @RequestBody QResponse qResponse) {
+        qResponseService.updateQResponse(quizId, questionId, qResponseId, qResponse);
+        Map<String, Boolean> map = new HashMap<>();
+        map.put("Success", true);
+        return new ResponseEntity<>(map, HttpStatus.OK);
+    }
 }

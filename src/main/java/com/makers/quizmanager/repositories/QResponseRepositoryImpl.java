@@ -26,6 +26,9 @@ public class QResponseRepositoryImpl implements QResponseRepository{
     private static final String SQL_CREATE = "INSERT INTO QM_QRESPONSES (QRESPONSE_ID, QUESTION_ID, QUIZ_ID, RESPONSE_TEXT, CORRECT_ANSWER) " +
             "VALUES (NEXTVAL('QM_QRESPONSES_SEQ'), ?, ?, ?, ?)";
 
+    private static final String SQL_UPDATE = "UPDATE QM_QRESPONSES SET RESPONSE_TEXT = ?, CORRECT_ANSWER = ? " +
+            "WHERE QRESPONSE_ID = ? AND QUESTION_ID = ? AND QUIZ_ID = ?";
+
     @Autowired
     JdbcTemplate jdbcTemplate;
 
@@ -64,7 +67,11 @@ public class QResponseRepositoryImpl implements QResponseRepository{
 
     @Override
     public void update(Integer quizId, Integer questionId, Integer qResponseId, QResponse qResponse) throws QmBadRequestException {
-
+        try {
+            jdbcTemplate.update(SQL_UPDATE, new Object[]{qResponse.getResponseText(), qResponse.getCorrectAnswer(), qResponseId, questionId, quizId});
+        }catch (Exception e) {
+            throw new QmResourceNotFoundException("QResponse not found");
+        }
     }
 
     @Override

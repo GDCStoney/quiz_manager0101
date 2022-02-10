@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Service
+@Transactional
 public class QResponseServiceImpl implements QResponseService{
 
     @Autowired
@@ -35,7 +36,7 @@ public class QResponseServiceImpl implements QResponseService{
 
     @Override
     public void updateQResponse(Integer quizId, Integer questionId, Integer qResponseId, QResponse qResponse) throws QmBadRequestException {
-
+        qResponseRepository.update(quizId, questionId, qResponseId, qResponse);
     }
 
     @Override
